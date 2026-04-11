@@ -47,6 +47,7 @@ docker-compose up -d
 ```
 
 This starts:
+
 - Rails app (port 3000)
 - PostgreSQL database
 - Redis (for Sidekiq/caching)
@@ -61,7 +62,7 @@ docker-compose exec web rails db:seed
 
 ### 3. Access Application
 
-- **Rails App**: http://localhost:3000
+- **Rails App**: <http://localhost:3000>
 - **Database**: localhost:5432
 - **Redis**: localhost:6379
 
