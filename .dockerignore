@@ -1,0 +1,34 @@
+# Version control
+.git
+.github
+
+# Documentation (not needed in container)
+*.md
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+log/*.log
+
+# Dependencies
+node_modules/
+
+# Test files
+coverage/
+
+# Database files
+*.sqlite3
+*.db
+
+# Docker files
+docker-compose*.yml
+Dockerfile*
+.dockerignore

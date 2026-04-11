@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  # Rails Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgresql://unione:241996@db:5432/unione_db_development
+      - REDIS_URL=redis://redis:6379/1
+      - SECRET_KEY_BASE=dev_secret_key_base_change_in_production_12345678901234567890
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - unione_network
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=unione
+      - POSTGRES_PASSWORD=241996
+      - POSTGRES_DB=unione_db_development
+    networks:
+      - unione_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U unione"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis (Sidekiq, Caching, ActionCable)
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    networks:
+      - unione_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Sidekiq (Background Jobs)
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgresql://unione:241996@db:5432/unione_db_development
+      - REDIS_URL=redis://redis:6379/1
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - unione_network
+
+  # Mailcatcher (Email Testing)
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - unione_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  gem_cache:
+
+networks:
+  unione_network:
+    driver: bridge
