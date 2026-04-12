@@ -24,6 +24,8 @@ gem 'caxlsx_rails', '~> 0.6'
 gem 'wicked_pdf', '~> 2.7'
 gem 'wkhtmltopdf-binary', '~> 0.12.6'
 gem 'icalendar', '~> 2.10'
+gem 'prawn', '~> 2.4'
+gem 'prawn-table', '~> 0.2.2'
 
 # Background jobs
 gem 'sidekiq', '~> 7.0'

@@ -38,6 +38,7 @@ Rails.application.routes.draw do
       get 'grades/term/:term_id', to: 'grades#by_term', as: 'grades_by_term'
       
       get 'transcript', to: 'transcript#show'
+      get 'transcript/pdf', to: 'transcript_pdf#show'
       get 'academic-history', to: 'transcript#academic_history'
       
       get 'schedule', to: 'schedule#show'
