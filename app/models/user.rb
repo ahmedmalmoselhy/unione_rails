@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include EagerLoadable
+  
   has_secure_password validations: true
 
   has_many :role_users, dependent: :destroy

@@ -34,7 +34,7 @@ module Api
 
       def recent_activity
         {
-          recent_enrollments: ::Enrollment.includes(student: :user, section: :course)
+          recent_enrollments: ::Enrollment.includes(student: [:user, :department], section: [:course, :professor])
                                         .order(created_at: :desc)
                                         .limit(10)
                                         .map { |e| enrollment_summary(e) },

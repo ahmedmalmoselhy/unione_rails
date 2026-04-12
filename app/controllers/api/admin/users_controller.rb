@@ -7,9 +7,9 @@ module Api
         authorize ::User
 
         @users = ::User.includes(:roles)
-                     .order(created_at: :desc)
-                     .page(params[:page])
-                     .per(params[:per_page] || 20)
+                       .order(created_at: :desc)
+                       .page(params[:page])
+                       .per(params[:per_page] || 20)
 
         # Filters
         if params[:role]
