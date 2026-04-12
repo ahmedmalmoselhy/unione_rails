@@ -1,0 +1,6 @@
+<h1><%= @announcement.title %></h1>
+<p>Dear <%= @user.first_name %>,</p>
+<p>A new announcement has been posted:</p>
+<p><%= @announcement.content %></p>
+<p>View all announcements at: <%= link_to 'View Announcements', announcements_url %></p>
+<p>Best regards,<br>UniOne Team</p>

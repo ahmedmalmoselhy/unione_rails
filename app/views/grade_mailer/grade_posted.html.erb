@@ -1,0 +1,8 @@
+<h1>Grade Posted</h1>
+<p>Dear <%= @student.user.first_name %>,</p>
+<p>Your grade has been posted for:</p>
+<p><strong>Course:</strong> <%= @course.code %> - <%= @course.name %></p>
+<p><strong>Grade:</strong> <%= @grade.letter_grade %></p>
+<p><strong>Points:</strong> <%= @grade.points %>/100</p>
+<p>View your grades at: <%= link_to 'View Grades', grades_url %></p>
+<p>Best regards,<br>UniOne Team</p>

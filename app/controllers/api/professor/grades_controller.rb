@@ -37,12 +37,19 @@ module Api
           next unless enrollment
 
           grade = enrollment.grade || Grade.new(enrollment: enrollment)
+          previous_grade = grade.letter_grade
           
           if grade.update(
             points: grade_params[:points],
             letter_grade: grade_params[:letter_grade],
             status: grade_params[:status] || 'complete'
           )
+            # Send notification if it's a new grade
+            if previous_grade.nil? && grade.letter_grade.present?
+              NotificationBroadcastService.grade_submitted(grade)
+              GradeMailer.grade_posted(grade).deliver_later
+            end
+            
             results[:success] += 1
           else
             results[:failed] += 1

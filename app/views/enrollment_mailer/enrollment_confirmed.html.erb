@@ -1,0 +1,8 @@
+<h1>Enrollment Confirmed</h1>
+<p>Dear <%= @student.user.first_name %>,</p>
+<p>Your enrollment has been confirmed:</p>
+<p><strong>Course:</strong> <%= @course.code %> - <%= @course.name %></p>
+<p><strong>Professor:</strong> <%= @professor.user.full_name %></p>
+<p><strong>Credit Hours:</strong> <%= @course.credit_hours %></p>
+<p>View your enrollments at: <%= link_to 'View Enrollments', enrollments_url %></p>
+<p>Best regards,<br>UniOne Team</p>

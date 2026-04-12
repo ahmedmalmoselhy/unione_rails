@@ -39,6 +39,14 @@ module Api
         enrollment_service = EnrollmentService.new
         
         if enrollment_service.enroll(@student, section, academic_term)
+          enrollment = @student.enrollments.find_by(section: section, academic_term: academic_term)
+          
+          # Send notification
+          NotificationBroadcastService.enrollment_created(enrollment)
+          
+          # Send email
+          EnrollmentMailer.enrollment_confirmed(enrollment).deliver_later
+
           render json: {
             success: true,
             message: 'Successfully enrolled in course',

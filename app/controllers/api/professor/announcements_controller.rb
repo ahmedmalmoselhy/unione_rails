@@ -36,6 +36,23 @@ module Api
         )
 
         if @announcement.save
+          # Send notification to all students in the section
+          @section.students.each do |student|
+            NotificationBroadcastService.broadcast_to_user(
+              student.user,
+              notification_type: 'SectionAnnouncementNotification',
+              data: {
+                title: @announcement.title,
+                message: @announcement.content,
+                announcement_id: @announcement.id,
+                section_id: @section.id,
+                course_code: @section.course.code
+              },
+              notifiable_type: 'Student',
+              notifiable_id: student.id
+            )
+          end
+
           render json: {
             success: true,
             message: 'Announcement created',
