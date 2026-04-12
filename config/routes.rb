@@ -25,6 +25,35 @@ Rails.application.routes.draw do
     post 'notifications/:id/read', to: 'notifications#mark_read'
     delete 'notifications/:id', to: 'notifications#destroy'
 
+    # Student portal routes
+    namespace :student do
+      get 'profile', to: 'profile#show'
+      patch 'profile', to: 'profile#update'
+      
+      get 'enrollments', to: 'enrollments#index'
+      post 'enrollments', to: 'enrollments#create'
+      delete 'enrollments/:id', to: 'enrollments#destroy'
+      
+      get 'grades', to: 'grades#index'
+      get 'grades/term/:term_id', to: 'grades#by_term', as: 'grades_by_term'
+      
+      get 'transcript', to: 'transcript#show'
+      get 'academic-history', to: 'transcript#academic_history'
+      
+      get 'schedule', to: 'schedule#show'
+      get 'schedule/ics', to: 'schedule#ics'
+      
+      get 'attendance', to: 'attendance#index'
+      get 'attendance/section/:section_id', to: 'attendance#by_section', as: 'attendance_by_section'
+      
+      get 'ratings', to: 'ratings#index'
+      post 'ratings', to: 'ratings#create'
+      
+      get 'waitlist', to: 'waitlist#index'
+      post 'waitlist', to: 'waitlist#create'
+      delete 'waitlist/:section_id', to: 'waitlist#destroy'
+    end
+
     # Admin routes
     namespace :admin do
       resources :universities, except: [:new, :edit]
