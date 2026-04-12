@@ -54,6 +54,33 @@ Rails.application.routes.draw do
       delete 'waitlist/:section_id', to: 'waitlist#destroy'
     end
 
+    # Professor portal routes
+    namespace :professor do
+      get 'profile', to: 'profile#show'
+      patch 'profile', to: 'profile#update'
+      
+      get 'sections', to: 'sections#index'
+      get 'sections/:id', to: 'sections#show'
+      get 'sections/:id/students', to: 'sections#students'
+      get 'sections/:id/schedule', to: 'sections#schedule'
+      
+      get 'sections/:section_id/grades', to: 'grades#index'
+      post 'sections/:section_id/grades', to: 'grades#create'
+      patch 'sections/:section_id/grades/:id', to: 'grades#update'
+      
+      get 'sections/:section_id/attendance', to: 'attendance#index'
+      get 'sections/:section_id/attendance/:session_id', to: 'attendance#show'
+      post 'sections/:section_id/attendance', to: 'attendance#create'
+      put 'sections/:section_id/attendance/:session_id', to: 'attendance#update'
+      post 'sections/:section_id/attendance/:session_id/close', to: 'attendance#close'
+      get 'sections/:section_id/attendance/statistics', to: 'attendance#statistics'
+      
+      get 'sections/:section_id/announcements', to: 'announcements#index'
+      post 'sections/:section_id/announcements', to: 'announcements#create'
+      patch 'sections/:section_id/announcements/:id', to: 'announcements#update'
+      delete 'sections/:section_id/announcements/:id', to: 'announcements#destroy'
+    end
+
     # Admin routes
     namespace :admin do
       resources :universities, except: [:new, :edit]
