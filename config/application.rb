@@ -14,6 +14,9 @@ require 'action_mailbox/engine'
 # Require the gems listed in Gemfile
 Bundler.require(*Rails.groups)
 
+# Require middleware
+require_relative '../app/middleware/audit_log_middleware'
+
 module UniOne
   class Application < Rails::Application
     config.load_defaults 7.1
