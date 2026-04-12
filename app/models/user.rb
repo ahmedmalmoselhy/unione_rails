@@ -6,6 +6,17 @@ class User < ApplicationRecord
   has_many :personal_access_tokens, dependent: :destroy
   has_many :password_reset_tokens, dependent: :destroy
 
+  has_one :student, dependent: :destroy
+  has_one :professor, dependent: :destroy
+  has_one :employee, dependent: :destroy
+
+  has_many :announcements, dependent: :destroy
+  has_many :announcement_reads, dependent: :destroy
+  has_many :section_announcements, dependent: :destroy
+  has_many :audit_logs, dependent: :nullify
+  has_many :webhooks, dependent: :destroy
+  has_many :notifications, dependent: :destroy
+
   validates :email, presence: true, uniqueness: { case_sensitive: false },
                     format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, length: { minimum: 6, allow_nil: true },
