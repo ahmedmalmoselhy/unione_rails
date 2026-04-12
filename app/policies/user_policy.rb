@@ -1,6 +1,14 @@
 class UserPolicy < ApplicationPolicy
+  def index?
+    user.admin? || user.has_role?('faculty_admin')
+  end
+
   def show?
-    user.admin? || user == record
+    user.admin? || user == record || user.has_role?('faculty_admin')
+  end
+
+  def create?
+    user.admin?
   end
 
   def update?
@@ -11,13 +19,23 @@ class UserPolicy < ApplicationPolicy
     user.admin?
   end
 
-  class Scope < ApplicationPolicy::Scope
-    def resolve
-      if user.admin?
-        scope.all
-      else
-        scope.where(id: user.id)
-      end
-    end
+  def assign_role?
+    user.admin?
+  end
+
+  def remove_role?
+    user.admin?
+  end
+
+  def activate?
+    user.admin?
+  end
+
+  def deactivate?
+    user.admin?
+  end
+
+  def statistics?
+    user.admin? || user.has_role?('faculty_admin')
   end
 end

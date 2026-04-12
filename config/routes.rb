@@ -84,6 +84,22 @@ Rails.application.routes.draw do
 
     # Admin routes
     namespace :admin do
+      # Dashboard
+      get 'dashboard', to: 'dashboard#index'
+      
+      # User management
+      resources :users, except: [:new, :edit] do
+        member do
+          post 'assign_role'
+          post 'remove_role'
+          post 'activate'
+          post 'deactivate'
+        end
+        collection do
+          get 'statistics'
+        end
+      end
+      
       resources :universities, except: [:new, :edit]
       resources :faculties, except: [:new, :edit]
       resources :departments, except: [:new, :edit]
