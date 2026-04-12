@@ -11,7 +11,8 @@
       "Bash(curl *)",
       "Bash(jq *)",
       "Bash(ping *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   },
   "$version": 3
