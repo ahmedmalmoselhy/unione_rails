@@ -88,7 +88,15 @@ Rails.application.routes.draw do
       resources :faculties, except: [:new, :edit]
       resources :departments, except: [:new, :edit]
       resources :courses, except: [:new, :edit]
-      resources :academic_terms, except: [:new, :edit], path: 'terms'
+      resources :academic_terms, except: [:new, :edit], path: 'terms' do
+        member do
+          post 'activate'
+          post 'deactivate'
+        end
+        collection do
+          get 'current', to: 'academic_terms#current'
+        end
+      end
       
       resources :webhooks, except: [:new, :edit] do
         get 'deliveries', on: :member
