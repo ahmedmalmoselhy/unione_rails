@@ -48,6 +48,7 @@ module Api
             if previous_grade.nil? && grade.letter_grade.present?
               NotificationBroadcastService.grade_submitted(grade)
               GradeMailer.grade_posted(grade).deliver_later
+              WebhookTriggerService.grade_submitted(grade)
             end
             
             results[:success] += 1

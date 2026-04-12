@@ -46,6 +46,9 @@ module Api
           
           # Send email
           EnrollmentMailer.enrollment_confirmed(enrollment).deliver_later
+          
+          # Trigger webhook
+          WebhookTriggerService.enrollment_created(enrollment)
 
           render json: {
             success: true,
@@ -68,6 +71,15 @@ module Api
         enrollment_service = EnrollmentService.new
         
         if enrollment_service.drop(@enrollment)
+          # Trigger webhook
+          WebhookTriggerService.trigger(:enrollment_dropped, data: {
+            enrollment_id: @enrollment.id,
+            student_id: @enrollment.student_id,
+            section_id: @enrollment.section_id,
+            course_code: @enrollment.section.course.code,
+            dropped_at: @enrollment.dropped_at
+          })
+
           render json: {
             success: true,
             message: 'Successfully dropped course'
