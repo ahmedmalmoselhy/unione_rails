@@ -53,6 +53,10 @@ Rails.application.routes.draw do
       get 'waitlist', to: 'waitlist#index'
       post 'waitlist', to: 'waitlist#create'
       delete 'waitlist/:section_id', to: 'waitlist#destroy'
+      
+      # Section announcements
+      get 'sections/:section_id/announcements', to: 'section_announcements#index'
+      get 'sections/:section_id/announcements/:id', to: 'section_announcements#show'
     end
 
     # Professor portal routes
@@ -80,6 +84,9 @@ Rails.application.routes.draw do
       post 'sections/:section_id/announcements', to: 'announcements#create'
       patch 'sections/:section_id/announcements/:id', to: 'announcements#update'
       delete 'sections/:section_id/announcements/:id', to: 'announcements#destroy'
+      
+      # Professor schedule
+      get 'schedule', to: 'sections#schedule'
     end
 
     # Admin routes
@@ -95,6 +102,32 @@ Rails.application.routes.draw do
           post 'activate'
           post 'deactivate'
         end
+        collection do
+          get 'statistics'
+        end
+      end
+      
+      # Academic management
+      resources :students, except: [:new, :edit] do
+        member do
+          post 'activate'
+          post 'deactivate'
+          post 'graduate'
+        end
+        collection do
+          get 'statistics'
+        end
+      end
+      
+      resources :professors, except: [:new, :edit] do
+        collection do
+          get 'statistics'
+        end
+      end
+      
+      resources :employees, except: [:new, :edit]
+      
+      resources :sections, except: [:new, :edit] do
         collection do
           get 'statistics'
         end
