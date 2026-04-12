@@ -4,9 +4,9 @@ module Api
       before_action :set_user, only: [:show, :update, :destroy, :assign_role, :remove_role, :activate, :deactivate]
 
       def index
-        authorize User
+        authorize ::User
 
-        @users = User.includes(:roles)
+        @users = ::User.includes(:roles)
                      .order(created_at: :desc)
                      .page(params[:page])
                      .per(params[:per_page] || 20)
@@ -49,7 +49,7 @@ module Api
       end
 
       def create
-        @user = User.new(user_params)
+        @user = ::User.new(user_params)
         authorize @user
 
         if @user.save
@@ -100,7 +100,7 @@ module Api
       def assign_role
         authorize @user
 
-        role = Role.find_by(slug: params[:role_slug])
+        role = ::Role.find_by(slug: params[:role_slug])
         
         unless role
           return render json: {
@@ -174,20 +174,20 @@ module Api
       end
 
       def statistics
-        authorize User
+        authorize ::User
 
         stats = {
-          total_users: User.count,
-          active_users: User.where(is_active: true).count,
-          inactive_users: User.where(is_active: false).count,
-          users_by_role: Role.joins(:users)
+          total_users: ::User.count,
+          active_users: ::User.where(is_active: true).count,
+          inactive_users: ::User.where(is_active: false).count,
+          users_by_role: ::Role.joins(:users)
                             .group('roles.slug', 'roles.name')
                             .count('users.id')
                             .map { |k, v| { role: k[1], slug: k[0], count: v } },
-          recent_registrations: User.where('created_at >= ?', 7.days.ago).count,
-          students_count: User.joins(:roles).where(roles: { slug: 'student' }).count,
-          professors_count: User.joins(:roles).where(roles: { slug: 'professor' }).count,
-          employees_count: User.joins(:roles).where(roles: { slug: 'employee' }).count
+          recent_registrations: ::User.where('created_at >= ?', 7.days.ago).count,
+          students_count: ::User.joins(:roles).where(roles: { slug: 'student' }).count,
+          professors_count: ::User.joins(:roles).where(roles: { slug: 'professor' }).count,
+          employees_count: ::User.joins(:roles).where(roles: { slug: 'employee' }).count
         }
 
         render json: {
@@ -199,7 +199,7 @@ module Api
       private
 
       def set_user
-        @user = User.find(params[:id])
+        @user = ::User.find(params[:id])
       end
 
       def user_json(user, include_details: false)
