@@ -1,0 +1,13 @@
+# See https://rspec.info/features/3-12/rspec-core/configuration
+RSpec.configure do |config|
+  config.expect_with :rspec do |expectations|
+    expectations.syntax = :expect
+  end
+
+  config.mock_with :rspec do |mocks|
+    mocks.verify_partial_doubles = true
+  end
+
+  config.order = :random
+  Kernel.srand config.seed
+end

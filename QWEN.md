@@ -215,5 +215,43 @@ Authorization: Bearer <token>
 - Documentation and planning: **Complete**
 - Database schema designed: **Complete**
 - API endpoints specified: **Complete**
-- Implementation: **Ready to start**
-- Estimated timeline: 7-8 weeks
+- **Phase 1 (Auth): Complete** ✅
+  - User, Role, RoleUser models with validations and associations
+  - JWT token service (encode, decode, generate)
+  - API auth endpoints: register, login, logout, me, change-password, forgot-password, reset-password, token management
+  - Rate limiting (Rack::Attack) - disabled in test
+  - Pundit authorization policies
+  - CORS configured
+  - 50 RSpec tests (47 passing)
+  - Database seeded with admin, student, professor test users
+- Estimated timeline: 7-8 weeks total
+
+### Test Users (password: `password123`)
+
+| Email | Role |
+|-------|------|
+| admin@unione.com | admin |
+| student@unione.com | student |
+| professor@unione.com | professor |
+
+### API Quick Test
+
+```bash
+# Login
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@unione.com","password":"password123"}'
+
+# Get current user
+curl http://localhost:3000/api/auth/me \
+  -H "Authorization: Bearer <token>"
+
+# Register
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"user":{"email":"test@example.com","password":"password123","password_confirmation":"password123","first_name":"Test","last_name":"User"}}'
+
+# Logout
+curl -X DELETE http://localhost:3000/api/auth/logout \
+  -H "Authorization: Bearer <token>"
+```

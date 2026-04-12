@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(ruby *)",
-      "Bash(rails *)"
+      "Bash(rails *)",
+      "Bash(mkdir *)",
+      "Bash(bundle *)",
+      "Bash(docker *)",
+      "Bash(docker-compose *)",
+      "Bash(timeout *)",
+      "Bash(curl *)",
+      "Bash(jq *)"
     ]
   },
   "$version": 3

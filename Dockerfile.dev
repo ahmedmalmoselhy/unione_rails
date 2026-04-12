@@ -11,21 +11,25 @@ RUN apt-get update -qq && \
     curl \
     postgresql-client \
     inotify-tools \
+    libyaml-dev \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
-
-# Install Node.js and Yarn
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
-    apt-get install -y nodejs && \
-    curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /usr/share/keyrings/yarn-archive-keyring.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/yarn-archive-keyring.gpg] https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt-get update && apt-get install -y yarn
 
 # Set working directory
 WORKDIR /app
 
+# Copy Gemfile first for caching
+COPY Gemfile Gemfile.lock* ./
+
+# Install Ruby gems
+RUN bundle install
+
+# Copy the rest of the application
+COPY . .
+
 # Set environment variables
 ENV RAILS_ENV=development \
-    BUNDLE_PATH=/usr/local/bundle
+    BUNDLE_PATH=/usr/local/bundle \
+    PATH="/usr/local/bundle/bin:$PATH"
 
 # Default command (will be overridden by docker-compose)
 CMD ["bash"]

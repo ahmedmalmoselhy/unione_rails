@@ -8,8 +8,8 @@ services:
       dockerfile: Dockerfile.dev
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/app
-      - gem_cache:/usr/local/bundle
+      - .:/app:cached
+      - bundle_data:/usr/local/bundle
     ports:
       - "3000:3000"
     environment:
@@ -17,6 +17,7 @@ services:
       - DATABASE_URL=postgresql://unione:241996@db:5432/unione_db_development
       - REDIS_URL=redis://redis:6379/1
       - SECRET_KEY_BASE=dev_secret_key_base_change_in_production_12345678901234567890
+      - BUNDLE_APP_CONFIG=/app/.bundle
     depends_on:
       db:
         condition: service_healthy
@@ -62,8 +63,8 @@ services:
       dockerfile: Dockerfile.dev
     command: bundle exec sidekiq -C config/sidekiq.yml
     volumes:
-      - .:/app
-      - gem_cache:/usr/local/bundle
+      - .:/app:cached
+      - bundle_data:/usr/local/bundle
     environment:
       - RAILS_ENV=development
       - DATABASE_URL=postgresql://unione:241996@db:5432/unione_db_development
@@ -88,7 +89,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
-  gem_cache:
+  bundle_data:
 
 networks:
   unione_network:

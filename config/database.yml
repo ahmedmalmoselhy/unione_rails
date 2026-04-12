@@ -1,0 +1,22 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DATABASE_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("DATABASE_PORT") { 5432 } %>
+  username: <%= ENV.fetch("DATABASE_USERNAME") { "unione" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { "241996" } %>
+
+development:
+  <<: *default
+  database: unione_db_development
+
+test:
+  <<: *default
+  database: unione_db_test
+
+production:
+  <<: *default
+  database: <%= ENV.fetch("DATABASE_NAME") { "unione_db_production" } %>
+  username: <%= ENV.fetch("DATABASE_USERNAME") { "unione" } %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") { "" } %>
