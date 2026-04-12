@@ -3,6 +3,7 @@ FactoryBot.define do
     sequence(:name) { |n| "Role #{n}" }
     sequence(:slug) { |n| "role_#{n}" }
     description { "Test role" }
+    permissions { {} }
   end
 
   factory :user do
@@ -48,6 +49,14 @@ FactoryBot.define do
     sequence(:email) { |n| "professor#{n}@test.com" }
   end
 
+  factory :employee_user, parent: :user do
+    sequence(:email) { |n| "employee#{n}@test.com" }
+    after(:create) do |user|
+      role = Role.find_or_create_by(slug: 'employee')
+      user.roles << role
+    end
+  end
+
   factory :university do
     name { 'Test University' }
     sequence(:code) { |n| "UNI#{n}" }
@@ -89,6 +98,14 @@ FactoryBot.define do
     association :department
   end
 
+  factory :employee do
+    sequence(:staff_number) { |n| "EMP#{n.to_s.rjust(4, '0')}" }
+    position { 'Test Position' }
+    hired_at { Date.current - 2.years }
+    association :user, factory: :employee_user
+    association :department
+  end
+
   factory :course do
     sequence(:code) { |n| "CS#{100 + n}" }
     name { 'Test Course' }
@@ -125,11 +142,144 @@ FactoryBot.define do
     association :academic_term
   end
 
+  factory :enrollment_waitlist do
+    sequence(:position) { |n| n }
+    priority_score { 35.0 }
+    requested_at { DateTime.current }
+    association :student
+    association :section
+    association :academic_term
+  end
+
+  factory :grade do
+    points { 85 }
+    letter_grade { 'A' }
+    status { :complete }
+    association :enrollment
+  end
+
+  factory :course_rating do
+    rating { 5 }
+    feedback { 'Great course!' }
+    submitted_at { DateTime.current }
+    association :enrollment
+  end
+
+  factory :attendance_session do
+    date { Date.current }
+    sequence(:session_number) { |n| n }
+    status { :open }
+    association :section
+  end
+
+  factory :attendance_record do
+    status { :present }
+    association :attendance_session
+    association :student
+  end
+
   factory :announcement do
     title { 'Test Announcement' }
     content { 'This is a test announcement.' }
     published_at { DateTime.current }
     is_published { true }
     association :user
+  end
+
+  factory :announcement_read do
+    read_at { DateTime.current }
+    association :user
+    association :announcement
+  end
+
+  factory :section_announcement do
+    title { 'Test Section Announcement' }
+    content { 'Test content' }
+    published_at { DateTime.current }
+    association :section
+    association :user
+  end
+
+  factory :student_term_gpa do
+    gpa { 3.5 }
+    credit_hours_completed { 90 }
+    association :student
+    association :academic_term
+  end
+
+  factory :student_department_history do
+    academic_year { 1 }
+    semester { 1 }
+    reason { 'Department change' }
+    association :student
+    association :department
+  end
+
+  factory :audit_log do
+    action { 'create' }
+    auditable_type { 'User' }
+    auditable_id { 1 }
+    description { 'Test audit log entry' }
+    old_values { {} }
+    new_values { { name: 'Test' } }
+    ip_address { '127.0.0.1' }
+    association :user, factory: :admin_user
+  end
+
+  factory :webhook do
+    url { 'https://example.com/webhook' }
+    secret { 'test_secret' }
+    events { ['enrollment.created', 'grade.submitted'] }
+    is_active { true }
+    failure_count { 0 }
+    association :user, factory: :admin_user
+  end
+
+  factory :webhook_delivery do
+    event { 'enrollment.created' }
+    payload { { enrollment_id: 1 } }
+    status { :pending }
+    attempt_count { 0 }
+    association :webhook
+  end
+
+  factory :notification do
+    notifiable_type { 'User' }
+    notifiable_id { 1 }
+    type { 'EnrollmentNotification' }
+    data { { message: 'Test notification' } }
+    association :user
+  end
+
+  factory :university_vice_president do
+    department { 'Academic Affairs' }
+    appointed_at { Date.current - 2.years }
+    association :user
+    association :university
+  end
+
+  factory :course_prerequisite do
+    association :course
+    association :prerequisite, factory: :course
+  end
+
+  factory :department_course do
+    is_owner { true }
+    association :department
+    association :course
+  end
+
+  factory :password_reset_token do
+    email { 'test@example.com' }
+    token { SecureRandom.urlsafe_base64 }
+    created_at { DateTime.current }
+  end
+
+  factory :personal_access_token do
+    tokenable_type { 'User' }
+    tokenable_id { 1 }
+    name { 'Test Token' }
+    token { SecureRandom.hex }
+    abilities { ['read', 'write'] }
   end
 end
