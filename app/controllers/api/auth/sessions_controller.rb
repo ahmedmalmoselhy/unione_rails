@@ -80,7 +80,7 @@ module Api
           last_name: user.last_name,
           full_name: user.full_name,
           phone: user.phone,
-          avatar_url: user.avatar_url,
+          avatar_path: user.avatar_path,
           roles: user.role_slugs,
           last_login_at: user.last_login_at,
           created_at: user.created_at

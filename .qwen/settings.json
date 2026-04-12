@@ -9,7 +9,8 @@
       "Bash(docker-compose *)",
       "Bash(timeout *)",
       "Bash(curl *)",
-      "Bash(jq *)"
+      "Bash(jq *)",
+      "Bash(ping *)"
     ]
   },
   "$version": 3

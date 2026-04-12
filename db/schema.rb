@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_12_000033) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_12_000035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -82,6 +82,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_12_000033) do
     t.index ["auditable_type", "auditable_id"], name: "index_audit_logs_on_auditable_type_and_auditable_id"
     t.index ["created_at"], name: "index_audit_logs_on_created_at"
     t.index ["user_id"], name: "index_audit_logs_on_user_id"
+  end
+
+  create_table "cache", force: :cascade do |t|
+    t.string "key", null: false
+    t.binary "value"
+    t.integer "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_cache_on_key", unique: true
   end
 
   create_table "course_prerequisites", force: :cascade do |t|
@@ -206,6 +215,19 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_12_000033) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["enrollment_id"], name: "index_grades_on_enrollment_id", unique: true
+  end
+
+  create_table "jobs", force: :cascade do |t|
+    t.string "queue", null: false
+    t.jsonb "payload", null: false
+    t.integer "priority", null: false
+    t.datetime "scheduled_at"
+    t.datetime "finished_at"
+    t.string "concurrency_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["concurrency_key"], name: "index_jobs_on_concurrency_key"
+    t.index ["queue", "priority", "scheduled_at"], name: "index_jobs_for_fetching"
   end
 
   create_table "notifications", force: :cascade do |t|
