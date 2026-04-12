@@ -1,4 +1,6 @@
 class Department < ApplicationRecord
+  include AuditLoggable
+
   belongs_to :faculty
   has_many :professors, dependent: :destroy
   has_many :employees, dependent: :destroy

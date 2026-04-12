@@ -101,6 +101,12 @@ Rails.application.routes.draw do
       resources :webhooks, except: [:new, :edit] do
         get 'deliveries', on: :member
       end
+      
+      resources :audit_logs, only: [:index, :show] do
+        collection do
+          get 'statistics'
+        end
+      end
     end
   end
 

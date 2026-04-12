@@ -33,5 +33,8 @@ module UniOne
 
     # Active Job
     config.active_job.queue_adapter = :sidekiq
+
+    # Middleware
+    config.middleware.use AuditLogMiddleware
   end
 end
