@@ -10,7 +10,8 @@
       "Bash(timeout *)",
       "Bash(curl *)",
       "Bash(jq *)",
-      "Bash(ping *)"
+      "Bash(ping *)",
+      "Bash(git add *)"
     ]
   },
   "$version": 3
