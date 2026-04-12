@@ -11,7 +11,7 @@ class Student < ApplicationRecord
   has_many :enrollment_waitlists, dependent: :destroy
 
   enum enrollment_status: { active: 0, graduated: 1, suspended: 2 }
-  enum academic_standing: { good: 0, probation: 1, suspension: 2 }
+  enum academic_standing: { excellent: 0, good: 1, probation: 2, suspension: 3 }
 
   validates :student_number, presence: true, uniqueness: true
 end
