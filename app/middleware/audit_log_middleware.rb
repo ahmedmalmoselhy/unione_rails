@@ -16,7 +16,7 @@ class AuditLogMiddleware
       end
     end
     
-    Current.ip_address = request.remote_ip
+    Current.ip_address = env['REMOTE_ADDR'] || env['HTTP_X_REAL_IP']
 
     @app.call(env)
   ensure
