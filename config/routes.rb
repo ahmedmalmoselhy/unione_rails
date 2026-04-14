@@ -87,6 +87,7 @@ Rails.application.routes.draw do
       
       # Professor schedule
       get 'schedule', to: 'sections#schedule'
+      get 'schedule/ics', to: 'sections#ics', as: 'schedule_ics'
     end
 
     # Admin routes
