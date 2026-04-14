@@ -139,6 +139,9 @@ Rails.application.routes.draw do
           resource :exam_schedule, only: [:show, :create, :update], path: 'exam-schedule', controller: 'exam_schedules' do
             post :publish, on: :collection
           end
+
+          # Teaching assistants
+          resources :teaching_assistants, only: [:index, :create, :destroy], controller: 'section_teaching_assistants'
         end
 
         resources :universities, except: [:new, :edit]
