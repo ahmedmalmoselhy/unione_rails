@@ -131,6 +131,11 @@ Rails.application.routes.draw do
         collection do
           get 'statistics'
         end
+
+        # Exam schedule management
+        resource :exam_schedule, only: [:show, :create, :update], path: 'exam-schedule', controller: 'exam_schedules' do
+          post :publish, on: :collection
+        end
       end
       
       resources :universities, except: [:new, :edit]
