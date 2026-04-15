@@ -15,4 +15,7 @@ Rails.application.configure do
   # Mailer
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'localhost') }
+
+  # Active Storage
+  config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', 'local').to_sym
 end

@@ -4,6 +4,21 @@ Rails.application.routes.draw do
   get '/api/health', to: 'api/health#show'
   get '/api/v1/health', to: 'api/health#show'
 
+  # File uploads
+  get '/api/user/avatar', to: 'api/users/avatar#show'
+  post '/api/user/avatar', to: 'api/users/avatar#create'
+  delete '/api/user/avatar', to: 'api/users/avatar#destroy'
+  get '/api/v1/user/avatar', to: 'api/users/avatar#show'
+  post '/api/v1/user/avatar', to: 'api/users/avatar#create'
+  delete '/api/v1/user/avatar', to: 'api/users/avatar#destroy'
+
+  get '/api/admin/universities/:university_id/logo', to: 'api/admin/university_logos#show'
+  post '/api/admin/universities/:university_id/logo', to: 'api/admin/university_logos#create'
+  delete '/api/admin/universities/:university_id/logo', to: 'api/admin/university_logos#destroy'
+  get '/api/v1/admin/universities/:university_id/logo', to: 'api/admin/university_logos#show'
+  post '/api/v1/admin/universities/:university_id/logo', to: 'api/admin/university_logos#create'
+  delete '/api/v1/admin/universities/:university_id/logo', to: 'api/admin/university_logos#destroy'
+
   # API v1 routes (versioned)
   namespace :api do
     namespace :v1 do

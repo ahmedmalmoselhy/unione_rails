@@ -18,6 +18,7 @@ class User < ApplicationRecord
   has_many :audit_logs, dependent: :nullify
   has_many :webhooks, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_one_attached :avatar
 
   validates :email, presence: true, uniqueness: { case_sensitive: false },
                     format: { with: URI::MailTo::EMAIL_REGEXP }
