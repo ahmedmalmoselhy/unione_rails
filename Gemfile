@@ -38,6 +38,9 @@ gem 'kaminari', '~> 1.2'
 # API JSON serialization
 gem 'jbuilder', '~> 2.11'
 
+# GraphQL API
+gem 'graphql', '~> 2.3'
+
 group :development, :test do
   gem 'rspec-rails', '~> 6.1'
   gem 'factory_bot_rails', '~> 6.4'

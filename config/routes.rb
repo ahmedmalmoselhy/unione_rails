@@ -29,8 +29,10 @@ Rails.application.routes.draw do
   get '/api/v1/user/gdpr/export', to: 'api/user/gdpr#export'
   post '/api/v1/user/gdpr/anonymize', to: 'api/user/gdpr#anonymize'
 
-  # GraphQL placeholder route
+  # GraphQL routes
   post '/graphql', to: 'graphql#execute'
+  post '/api/graphql', to: 'graphql#execute'
+  post '/api/v1/graphql', to: 'graphql#execute'
 
   # API v1 routes (versioned)
   namespace :api do

@@ -19,13 +19,13 @@ The enhancement roadmap has been executed through incremental commits. Core API 
 - ActiveStorage-based uploads for user avatars and university logos.
 - Locale endpoint + Arabic locale file.
 - GDPR export/anonymize endpoints.
-- GraphQL placeholder endpoint.
+- GraphQL schema, types, queries, and mutations endpoint.
 
 ## Remaining Work
 
 1. Execute migration and test validation in an environment with Bundler.
 2. Expand request-spec coverage for new endpoints introduced in this wave.
-3. Replace GraphQL placeholder with full schema/resolvers when prioritized.
+3. Expand GraphQL domain coverage with additional schema types and mutations as needed.
 4. Finalize Sentry gem installation and lockfile update if enabled for production.
 
 ## Operational Notes

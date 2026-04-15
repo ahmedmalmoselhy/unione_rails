@@ -20,14 +20,14 @@ All active roadmap items from the previous planning pass have been implemented i
 6. Monitoring and observability baseline (health + structured logging + Sentry initializer)
 7. Admin import API consolidation
 8. ActiveStorage upload APIs (user avatar, university logo)
-9. Advanced backlog scaffolding (i18n locale endpoint, GDPR endpoint, GraphQL placeholder)
+9. Advanced backlog delivery (i18n locale endpoint, GDPR endpoint, GraphQL schema/types/mutations)
 
 ---
 
 ## Current State by Item
 
 | Item | Status | Notes |
-|---|---|---|
+| --- | --- | --- |
 | Teaching assistant management | Complete | Implemented earlier and verified |
 | Group projects management | Complete | Implemented earlier and verified |
 | Professor grade import | Complete | Added to professor routes and controller |
@@ -36,7 +36,7 @@ All active roadmap items from the previous planning pass have been implemented i
 | CI pipeline | Complete | GitHub Actions workflow with Postgres and Redis |
 | Monitoring and observability | Complete (baseline) | Health endpoint and structured logging added |
 | ActiveStorage uploads | Complete | Migration, storage config, avatar/logo APIs |
-| i18n/GDPR/GraphQL backlog | Partial | Locale + GDPR implemented, GraphQL is placeholder only |
+| i18n/GDPR/GraphQL backlog | Complete (baseline) | Locale + GDPR + GraphQL endpoint with queries/mutations implemented |
 
 ---
 
@@ -44,7 +44,7 @@ All active roadmap items from the previous planning pass have been implemented i
 
 1. Run migrations and full test suite in an environment with Bundler available.
 2. Add request specs for newly added observability, upload, and GDPR/locale endpoints.
-3. Replace GraphQL placeholder with a full GraphQL schema if this becomes a product requirement.
+3. Expand GraphQL domain coverage with additional types and business mutations as needed.
 4. Install and lock Sentry gems (if production error tracking is required in this deployment).
 
 ---
