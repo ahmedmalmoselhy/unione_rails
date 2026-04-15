@@ -82,6 +82,28 @@ docker-compose down              # Stop containers
 docker-compose down -v           # Stop + remove volumes (fresh start)
 ```
 
+### 6. Run Production Stack
+
+```bash
+# Set required secrets
+export SECRET_KEY_BASE=replace_with_secure_value
+export POSTGRES_PASSWORD=replace_with_secure_value
+export POSTGRES_DB=unione_db_production
+
+# Build and run production services
+docker-compose -f docker-compose.prod.yml up -d --build
+
+# Follow logs
+docker-compose -f docker-compose.prod.yml logs -f web
+docker-compose -f docker-compose.prod.yml logs -f sidekiq
+```
+
+Production files added in this repository:
+
+- `Dockerfile`
+- `docker-compose.prod.yml`
+- `entrypoint.sh`
+
 ---
 
 ## 🔧 Common Docker Commands
