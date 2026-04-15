@@ -1,0 +1,8 @@
+ar:
+  hello: "مرحبا"
+  errors:
+    unauthorized: "غير مصرح"
+    forbidden: "غير مسموح"
+  messages:
+    locale_updated: "تم تحديث اللغة"
+    profile_updated: "تم تحديث الملف الشخصي"

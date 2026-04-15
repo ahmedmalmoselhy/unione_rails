@@ -2,6 +2,8 @@ class ApplicationController < ActionController::API
   include Pundit::Authorization
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
+  before_action :set_locale
+
   rescue_from Pundit::NotAuthorizedError, with: :render_forbidden
   rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
@@ -58,5 +60,16 @@ class ApplicationController < ActionController::API
     response[:message] = message if message
     response[:data] = data if data
     render json: response, status: status
+  end
+
+  def set_locale
+    requested_locale = request.headers['X-Locale'].presence || params[:locale].presence
+    locale = requested_locale.to_s
+
+    if I18n.available_locales.map(&:to_s).include?(locale)
+      I18n.locale = locale
+    else
+      I18n.locale = I18n.default_locale
+    end
   end
 end

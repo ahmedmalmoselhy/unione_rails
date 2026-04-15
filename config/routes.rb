@@ -19,6 +19,19 @@ Rails.application.routes.draw do
   post '/api/v1/admin/universities/:university_id/logo', to: 'api/admin/university_logos#create'
   delete '/api/v1/admin/universities/:university_id/logo', to: 'api/admin/university_logos#destroy'
 
+  # Locale and privacy APIs
+  get '/api/locale', to: 'api/locale#show'
+  put '/api/locale', to: 'api/locale#update'
+  get '/api/v1/locale', to: 'api/locale#show'
+  put '/api/v1/locale', to: 'api/locale#update'
+  get '/api/user/gdpr/export', to: 'api/user/gdpr#export'
+  post '/api/user/gdpr/anonymize', to: 'api/user/gdpr#anonymize'
+  get '/api/v1/user/gdpr/export', to: 'api/user/gdpr#export'
+  post '/api/v1/user/gdpr/anonymize', to: 'api/user/gdpr#anonymize'
+
+  # GraphQL placeholder route
+  post '/graphql', to: 'graphql#execute'
+
   # API v1 routes (versioned)
   namespace :api do
     namespace :v1 do
