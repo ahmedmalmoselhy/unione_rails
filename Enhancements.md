@@ -1,63 +1,34 @@
 ﻿# UniOne Rails - Enhancements (Verified)
 
-**Last Updated**: April 15, 2026
-**Current Status**: Production ready with targeted enhancement gaps
-**Implementation**: Ruby on Rails API + PostgreSQL + ActionCable + Sidekiq
+Last Updated: April 15, 2026
+Current Status: Enhancement wave completed with minor follow-up items
+Implementation: Ruby on Rails API + PostgreSQL + Sidekiq + ActionCable
 
-## Overview
+## Summary
 
-The Rails implementation is highly complete and already includes several features previously marked as missing. This document tracks verified status and remaining work only.
+The enhancement roadmap has been executed through incremental commits. Core API parity, deployment readiness, CI, observability baseline, import consolidation, file uploads, and advanced scaffolding are now in place.
 
-## Implemented Enhancements (Verified)
+## Implemented in This Wave
 
-- Teaching assistant management endpoints are implemented.
-- Group project management is implemented.
-- Admin import endpoints for students and grades are implemented.
-- Exam schedule routes and controller are implemented.
-- Professor schedule ICS export route is implemented.
-- API v1 namespace is implemented with legacy route compatibility.
+- Professor grade import endpoint and service integration.
+- Request specs for enhancement import flows.
+- Production Docker artifacts.
+- GitHub Actions CI workflow.
+- Health endpoint and structured production logging initializer.
+- Consolidated admin import endpoints.
+- ActiveStorage-based uploads for user avatars and university logos.
+- Locale endpoint + Arabic locale file.
+- GDPR export/anonymize endpoints.
+- GraphQL placeholder endpoint.
 
-## Remaining Gaps (Prioritized)
+## Remaining Work
 
-### 1) Professor Grade Import Endpoint
-**Priority**: P0
-- Add professor-facing grade import endpoint that uses GradeImportService.
-- Enforce section ownership and payload validation.
+1. Execute migration and test validation in an environment with Bundler.
+2. Expand request-spec coverage for new endpoints introduced in this wave.
+3. Replace GraphQL placeholder with full schema/resolvers when prioritized.
+4. Finalize Sentry gem installation and lockfile update if enabled for production.
 
-### 2) Request Specs for Enhancement Endpoints
-**Priority**: P0
-- Add request specs for TA, group project, and import endpoints.
-- Add request spec for professor grade import endpoint.
+## Operational Notes
 
-### 3) Production Docker Setup
-**Priority**: P0
-- Add production Dockerfile.
-- Add docker-compose.prod.yml.
-- Add entrypoint script for db preparation.
-
-### 4) CI/CD Pipeline
-**Priority**: P1
-- Add GitHub Actions workflow for tests and lint checks.
-
-### 5) Monitoring and Observability
-**Priority**: P1
-- Add error tracking and health checks.
-
-### 6) API Consolidation and Optional Backlog
-**Priority**: P2-P3
-- Consolidate import endpoints if needed.
-- Keep GDPR, GraphQL, and i18n as later milestones.
-
-## Execution Sequence (Commit Per Step)
-
-1. Documentation alignment (this step)
-2. Professor grade import endpoint
-3. Request spec expansion for enhancement flows
-4. Production Docker setup
-
-## Success Criteria
-
-- Verified docs match code reality.
-- Professor import parity is delivered.
-- Enhancement endpoints are test-covered.
-- Production container files are present and validated.
+- Backward compatibility for legacy API routes is preserved.
+- /api/v1 routes remain available for new integrations.
