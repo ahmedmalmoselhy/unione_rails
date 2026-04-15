@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   # Health check
   get '/up', to: proc { [200, {}, ['OK']] }
+  get '/api/health', to: 'api/health#show'
+  get '/api/v1/health', to: 'api/health#show'
 
   # API v1 routes (versioned)
   namespace :api do
