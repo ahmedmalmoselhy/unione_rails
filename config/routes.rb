@@ -73,6 +73,7 @@ Rails.application.routes.draw do
 
         get 'sections/:section_id/grades', to: 'grades#index'
         post 'sections/:section_id/grades', to: 'grades#create'
+        post 'sections/:section_id/grades/import', to: 'grades#import'
         patch 'sections/:section_id/grades/:id', to: 'grades#update'
 
         get 'sections/:section_id/attendance', to: 'attendance#index'
@@ -233,6 +234,7 @@ Rails.application.routes.draw do
       get 'sections/:id/schedule', to: 'sections#schedule'
       get 'sections/:section_id/grades', to: 'grades#index'
       post 'sections/:section_id/grades', to: 'grades#create'
+      post 'sections/:section_id/grades/import', to: 'grades#import'
       patch 'sections/:section_id/grades/:id', to: 'grades#update'
       get 'sections/:section_id/attendance', to: 'attendance#index'
       post 'sections/:section_id/attendance', to: 'attendance#create'

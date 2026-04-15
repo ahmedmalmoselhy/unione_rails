@@ -68,6 +68,38 @@ module Api
         }, status: :ok
       end
 
+      def import
+        authorize @section, :submit_grades?
+
+        unless params[:file].present?
+          return render json: {
+            success: false,
+            error: 'No file provided'
+          }, status: :unprocessable_entity
+        end
+
+        begin
+          file_data = read_excel_data(params[:file])
+          service = GradeImportService.new
+          result = service.import_from_array(file_data, @section.id, @section.academic_term_id)
+
+          render json: {
+            success: result[:success],
+            message: "Grade import completed: #{result[:imported]} imported, #{result[:failed]} failed",
+            data: {
+              imported: result[:imported],
+              failed: result[:failed],
+              errors: result[:errors]
+            }
+          }, status: result[:success] ? :ok : :multi_status
+        rescue => e
+          render json: {
+            success: false,
+            error: "Grade import failed: #{e.message}"
+          }, status: :unprocessable_entity
+        end
+      end
+
       def update
         @grade = Grade.find(params[:id])
         authorize @grade, :update?
@@ -106,6 +138,16 @@ module Api
 
       def grade_params
         params.require(:grade).permit(:points, :letter_grade, :status)
+      end
+
+      def read_excel_data(file)
+        filepath = file.respond_to?(:tempfile) ? file.tempfile.path : file.path
+        spreadsheet = Roo::Excelx.new(filepath)
+        headers = spreadsheet.row(1)
+
+        (2..spreadsheet.last_row).map do |i|
+          Hash[headers.zip(spreadsheet.row(i))]
+        end
       end
 
       def grade_json(grade)
