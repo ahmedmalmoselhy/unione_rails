@@ -19,6 +19,14 @@ class StudentPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def import?
+    user.admin?
+  end
+
+  def import_template?
+    user.admin?
+  end
+
   def enroll?
     user.student? && record.user == user
   end

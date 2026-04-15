@@ -168,6 +168,64 @@ module Api
         }, status: :ok
       end
 
+      def import
+        authorize ::Student
+
+        unless params[:file].present?
+          return render json: {
+            success: false,
+            error: 'No file provided'
+          }, status: :unprocessable_entity
+        end
+
+        faculty_id = params[:faculty_id]
+        department_id = params[:department_id]
+
+        unless faculty_id && department_id
+          return render json: {
+            success: false,
+            error: 'faculty_id and department_id are required'
+          }, status: :unprocessable_entity
+        end
+
+        begin
+          file_data = read_excel_data(params[:file])
+          service = StudentImportService.new
+          result = service.import_from_array(file_data, faculty_id, department_id)
+
+          render json: {
+            success: result[:success],
+            message: "Import completed: #{result[:imported]} imported, #{result[:failed]} failed",
+            data: {
+              imported: result[:imported],
+              failed: result[:failed],
+              errors: result[:errors]
+            }
+          }, status: result[:success] ? :ok : :multi_status
+        rescue => e
+          render json: {
+            success: false,
+            error: "Import failed: #{e.message}"
+          }, status: :unprocessable_entity
+        end
+      end
+
+      def import_template
+        authorize ::Student
+
+        headers['Content-Disposition'] = 'attachment; filename="student_import_template.xlsx"'
+        headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
+        package = Axlsx::Package.new
+        package.workbook.add_worksheet(name: 'Students') do |sheet|
+          sheet.add_row %w[student_number first_name last_name email academic_year]
+          sheet.add_row ['STD001', 'John', 'Doe', 'john@example.com', 1]
+          sheet.add_row ['STD002', 'Jane', 'Smith', 'jane@example.com', 2]
+        end
+
+        send_data package.to_stream.read, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'student_import_template.xlsx'
+      end
+
       private
 
       def set_student
@@ -217,6 +275,16 @@ module Api
           :user_id, :faculty_id, :department_id, :academic_year, :semester,
           :enrollment_status, :gpa, :academic_standing, :enrolled_at, :graduated_at
         )
+      end
+
+      def read_excel_data(file)
+        filepath = file.respond_to?(:tempfile) ? file.tempfile.path : file.path
+        spreadsheet = Roo::Excelx.new(filepath)
+        headers = spreadsheet.row(1)
+        
+        (2..spreadsheet.last_row).map do |i|
+          Hash[headers.zip(spreadsheet.row(i))]
+        end
       end
     end
   end

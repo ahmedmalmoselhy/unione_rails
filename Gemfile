@@ -19,6 +19,7 @@ gem 'rack-cors', '~> 2.0'
 # Excel import/export
 gem 'caxlsx', '~> 4.1'
 gem 'caxlsx_rails', '~> 0.6'
+gem 'roo', '~> 2.10'
 
 # PDF & iCal
 gem 'wicked_pdf', '~> 2.7'

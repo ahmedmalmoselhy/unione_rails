@@ -122,6 +122,57 @@ module Api
         }, status: :ok
       end
 
+      def import_grades
+        authorize ::Section
+
+        section = ::Section.find(params[:section_id])
+        academic_term_id = params[:academic_term_id] || section.academic_term_id
+
+        unless params[:file].present?
+          return render json: {
+            success: false,
+            error: 'No file provided'
+          }, status: :unprocessable_entity
+        end
+
+        begin
+          file_data = read_excel_data(params[:file])
+          service = GradeImportService.new
+          result = service.import_from_array(file_data, section.id, academic_term_id)
+
+          render json: {
+            success: result[:success],
+            message: "Grade import completed: #{result[:imported]} imported, #{result[:failed]} failed",
+            data: {
+              imported: result[:imported],
+              failed: result[:failed],
+              errors: result[:errors]
+            }
+          }, status: result[:success] ? :ok : :multi_status
+        rescue => e
+          render json: {
+            success: false,
+            error: "Grade import failed: #{e.message}"
+          }, status: :unprocessable_entity
+        end
+      end
+
+      def grades_import_template
+        authorize ::Section
+
+        headers['Content-Disposition'] = 'attachment; filename="grade_import_template.xlsx"'
+        headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
+        package = Axlsx::Package.new
+        package.workbook.add_worksheet(name: 'Grades') do |sheet|
+          sheet.add_row %w[student_number course_code points letter_grade]
+          sheet.add_row ['STD001', 'CS101', 85, 'A']
+          sheet.add_row ['STD002', 'CS101', 78, 'B+']
+        end
+
+        send_data package.to_stream.read, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'grade_import_template.xlsx'
+      end
+
       private
 
       def set_section
@@ -185,6 +236,16 @@ module Api
         end
 
         (utilizations.sum / utilizations.size).round(2)
+      end
+
+      def read_excel_data(file)
+        filepath = file.respond_to?(:tempfile) ? file.tempfile.path : file.path
+        spreadsheet = Roo::Excelx.new(filepath)
+        headers = spreadsheet.row(1)
+        
+        (2..spreadsheet.last_row).map do |i|
+          Hash[headers.zip(spreadsheet.row(i))]
+        end
       end
     end
   end

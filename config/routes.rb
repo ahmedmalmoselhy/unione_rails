@@ -119,20 +119,17 @@ Rails.application.routes.draw do
           end
           collection do
             get 'statistics'
+            post 'import'
+            get 'import_template'
           end
         end
 
-        resources :professors, except: [:new, :edit] do
-          collection do
-            get 'statistics'
-          end
-        end
-
-        resources :employees, except: [:new, :edit]
-
+        # Grade import via sections
         resources :sections, except: [:new, :edit] do
           collection do
             get 'statistics'
+            post 'import_grades'
+            get 'grades_import_template'
           end
 
           # Exam schedule management
@@ -143,6 +140,14 @@ Rails.application.routes.draw do
           # Teaching assistants
           resources :teaching_assistants, only: [:index, :create, :destroy], controller: 'section_teaching_assistants'
         end
+
+        resources :professors, except: [:new, :edit] do
+          collection do
+            get 'statistics'
+          end
+        end
+
+        resources :employees, except: [:new, :edit]
 
         resources :universities, except: [:new, :edit]
         resources :faculties, except: [:new, :edit]

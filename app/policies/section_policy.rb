@@ -47,6 +47,14 @@ class SectionPolicy < ApplicationPolicy
     user.professor? && record.professor.user == user || user.admin?
   end
 
+  def import_grades?
+    user.admin?
+  end
+
+  def grades_import_template?
+    user.admin?
+  end
+
   private
 
   def user_can_view_section?
