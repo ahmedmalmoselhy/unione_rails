@@ -139,6 +139,12 @@ Rails.application.routes.draw do
 
           # Teaching assistants
           resources :teaching_assistants, only: [:index, :create, :destroy], controller: 'section_teaching_assistants'
+
+          # Group projects (nested under sections)
+          resources :group_projects, only: [:index, :show, :create, :update, :destroy], controller: 'group_projects' do
+            post 'members', to: 'group_projects#add_member', on: :member
+            delete 'members/:member_id', to: 'group_projects#remove_member', on: :member
+          end
         end
 
         resources :professors, except: [:new, :edit] do

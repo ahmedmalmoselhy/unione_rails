@@ -7,6 +7,7 @@ class Section < ApplicationRecord
   has_many :students, through: :enrollments
   has_many :attendance_sessions, dependent: :destroy
   has_many :section_announcements, dependent: :destroy
+  has_many :group_projects, dependent: :destroy
 
   validates :capacity, numericality: { greater_than: 0 }
 
