@@ -100,6 +100,13 @@ Rails.application.routes.draw do
         # Dashboard
         get 'dashboard', to: 'dashboard#index'
 
+        # Consolidated import API
+        post 'imports/students', to: 'imports#students'
+        post 'imports/grades', to: 'imports#grades'
+        post 'imports/professors', to: 'imports#professors'
+        get 'import-templates/students', to: 'imports#students_template'
+        get 'import-templates/grades', to: 'imports#grades_template'
+
         # User management
         resources :users, except: [:new, :edit] do
           member do
@@ -250,6 +257,11 @@ Rails.application.routes.draw do
 
     namespace :admin do
       get 'dashboard', to: 'dashboard#index'
+      post 'imports/students', to: 'imports#students'
+      post 'imports/grades', to: 'imports#grades'
+      post 'imports/professors', to: 'imports#professors'
+      get 'import-templates/students', to: 'imports#students_template'
+      get 'import-templates/grades', to: 'imports#grades_template'
       resources :users, except: [:new, :edit]
       resources :students, except: [:new, :edit]
       resources :professors, except: [:new, :edit]
