@@ -19,14 +19,16 @@ The enhancement roadmap has been executed through incremental commits. Core API 
 - ActiveStorage-based uploads for user avatars and university logos.
 - Locale endpoint + Arabic locale file.
 - GDPR export/anonymize endpoints.
-- GraphQL schema, types, queries, and mutations endpoint.
+- GraphQL schema, types, queries, and mutations (Expanded with Course and Enrollment).
+- Data Export functionality for Students, Professors, and Courses (CSV/XLSX).
+- Sentry integration for production monitoring.
+- Broadened automated test coverage with new request specs.
 
 ## Remaining Work
 
 1. Execute migration and test validation in an environment with Bundler.
-2. Expand request-spec coverage for new endpoints introduced in this wave.
-3. Expand GraphQL domain coverage with additional schema types and mutations as needed.
-4. Finalize Sentry gem installation and lockfile update if enabled for production.
+2. Continue expanding GraphQL domain coverage with additional schema types and mutations.
+3. Ongoing performance tuning and database index optimization.
 
 ## Operational Notes
 
