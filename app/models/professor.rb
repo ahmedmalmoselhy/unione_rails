@@ -5,4 +5,6 @@ class Professor < ApplicationRecord
 
   validates :staff_number, presence: true, uniqueness: true
   validates :academic_rank, presence: true
+
+  delegate :first_name, :last_name, :email, to: :user
 end

@@ -14,4 +14,6 @@ class Student < ApplicationRecord
   enum academic_standing: { excellent: 0, good: 1, probation: 2, suspension: 3 }
 
   validates :student_number, presence: true, uniqueness: true
+
+  delegate :first_name, :last_name, :email, to: :user
 end

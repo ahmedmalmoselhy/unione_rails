@@ -213,6 +213,8 @@ Rails.application.routes.draw do
           get 'deliveries', on: :member
         end
 
+        resources :exports, only: [:index]
+
         resources :audit_logs, only: [:index, :show] do
           collection do
             get 'statistics'
