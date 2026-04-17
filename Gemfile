@@ -35,6 +35,10 @@ gem 'redis', '~> 5.0'
 # Pagination
 gem 'kaminari', '~> 1.2'
 
+# Monitoring
+gem 'sentry-ruby'
+gem 'sentry-rails'
+
 # API JSON serialization
 gem 'jbuilder', '~> 2.11'
 
